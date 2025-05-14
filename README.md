@@ -1,44 +1,36 @@
 # LMC-Orbital-Dynamics
 ------------
-Compile with: mpic++ -O3 -std=c++17 LMC.cpp -o LMC  
-Run with: mpirun -np 20 ./LMC  
+Compile with: mpic++ -O3 -std=c++17 LMC.cpp -o LMC
+Run with: mpirun -np 20 ./LMC
 
-On a cluster, using 20 MPI processes, the simulation takes approximately 5 minutes to complete.
+On a cluster, using 20 MPI process, the simulation takes approximately 5 minutes to complete.
 
 ------------
 
-This C++ code simulates the orbit of the Large Magellanic Cloud (LMC) around the Milky Way galaxy over a timescale of several billion years. It is designed to run in parallel using MPI, which allows the code to distribute different parameter combinations across multiple processes. The main goal is to study the dynamical evolution of the LMC while considering realistic gravitational potentials and dynamical friction.
+This C++ code simulates the orbit of the Large Magellanic Cloud (LMC) around the Milky Way on a timescale of a few billion years. It is designed to be executed in parallel using MPI, which allows the code to distribute different combinations of parameters among multiple threads. The main goal is to study the dynamical evolution of the LMC, considering realistic gravitational potentials and dynamic friction.
 
-### Step-by-step Explanation:
+### Step-by-step explanation:
 
-1. **Parallelization Setup (MPI):**  
-   The code uses MPI to distribute simulations across different processors. Each process explores different initial conditions by varying parameters such as position and velocity within a specified grid.
+1. **Parallelization Configuration (MPI):**
+The code uses MPI to distribute simulations among different processors. Each process should explore different initial conditions, varying parameters such as position and velocity within a specified grid.
 
-2. **Time Integration Settings:**  
-   The total integration time is set to 5 Gyr (Gigayears), and the timestep is set to 0.01 Gyr (10 Myr). A Leapfrog integrator is used due to its symplectic nature, which conserves energy reasonably well over long timescales. The integrator is implemented in an adaptive form to increase accuracy.
+2. **Temporal Integration Settings:**
+The total integration time is set to 5 Gyr (Gigayears) and the time step is set to 0.01 Gyr (10 Myr). A Leapfrog integrator is used because of its symplectic nature, which conserves energy reasonably well over long time scales. The integrator is implemented adaptively to increase accuracy.
 
 3. **Potential Models Used:**
-   - **Disk Potential:**  
-     A Miyamoto-Nagai disk potential is used to represent the stellar disk of the Milky Way. This potential provides a flattened disk-like gravitational field, suitable for modeling disk galaxies.
-   - **Dark Matter Halo Potential:**  
-     A Navarro-Frenk-White (NFW) profile is used to describe the Milky Way's dark matter halo. The NFW profile is widely used in cosmological simulations and matches the density distribution of halos formed in cold dark matter models.
-   - **Bulge Potential:**  
-     A Hernquist potential is employed to represent the central bulge of the Milky Way. The Hernquist profile closely mimics the observed properties of spheroidal components in galaxies.
+- **Disk Potential:**
+An exponential disk potential is used to represent the stellar disk of the Milky Way. This potential provides a flattened gravitational field, suitable for modeling disk galaxies.
+- **Dark Matter Halo Potential:**
+A Navarro-Frenk-White (NFW) profile is used to describe the dark matter halo of the Milky Way. The NFW profile is widely used in cosmological simulations and corresponds to the density distribution of halos formed in cold dark matter models.
+- **Bulge Potential:**
+A Hernquist potential is employed to represent the Large Magellanic Cloud. The Hernquist profile closely mimics the observed properties of spheroidal components in galaxies, in particular, bulges and halos.
 
-4. **Dynamical Friction:**  
-   The code includes a dynamical friction term based on Chandrasekhar's formula. This force accounts for the gravitational drag experienced by the LMC as it moves through the Milky Way's dark matter halo, which slows down its motion over time.
+4. **Dynamic Friction:**
+The code includes a dynamic friction term based on the Chandrasekhar formula. This force is responsible for the gravitational drag experienced by the LMC as it moves through the Milky Way's dark matter halo, which slows its motion over time.
 
-5. **Initial Conditions and Parameter Scan:**  
-   Each MPI process is responsible for a different combination of initial velocities and positions, allowing the user to scan a grid of initial conditions to find a suitable orbit for the LMC.
-
-6. **Energy and Distance Tracking:**  
-   Throughout the simulation, the code saves the energy and galactocentric distance of the LMC at each timestep. These are written to individual output files for further analysis and plotting.
-
-7. **Output:**  
-   For each simulation, two files are generated:
-   - One containing the galactocentric distance of the LMC as a function of time.
-   - Another containing the total energy of the system (kinetic + potential) over time.
+5. **Energy and Distance Tracking:**
+Throughout the simulation, the code saves the energy and galactocentric distance of the LMC at each time step. This information is written to individual output files for later analysis and plotting.
 
 ### Final Comments:
 
-Unfortunately, all outputs are constant, which physically should not happen. Despite many attempts, I was unable to correct the issue. If anyone accessing this repository knows how to fix the code or wants to give it a try, feel free to do so!
+For each mpi rank, a file is generated containing the galactocentric distance of the LMC as a function of time and the total energy of the system (kinetic + potential) over time. My idea was to obtain the orbital energy loss and compare it with observations and N-body simulations. Unfortunately, all the outputs are constant, which physically should not happen. Despite many attempts, I was unable to fix the problem. If anyone accessing this repository knows how to fix the code or wants to try, feel free to do so!
