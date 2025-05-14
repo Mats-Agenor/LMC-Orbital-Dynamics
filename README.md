@@ -1,6 +1,7 @@
 # LMC-Orbital-Dynamics
 ------------
 Compile with: mpic++ -O3 -std=c++17 LMC.cpp -o LMC
+
 Run with: mpirun -np 20 ./LMC
 
 On a cluster, using 20 MPI process, the simulation takes approximately 5 minutes to complete.
